@@ -1,0 +1,85 @@
+<html>
+<head>
+<title>RestCalcAutomationTest.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+.s4 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+RestCalcAutomationTest.py</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">random</span>
+<span class="s0">import </span><span class="s1">time</span>
+
+<span class="s0">from </span><span class="s1">selenium </span><span class="s0">import </span><span class="s1">webdriver</span>
+<span class="s0">from </span><span class="s1">selenium</span><span class="s2">.</span><span class="s1">webdriver</span><span class="s2">.</span><span class="s1">common</span><span class="s2">.</span><span class="s1">keys </span><span class="s0">import </span><span class="s1">Keys</span>
+<span class="s0">from </span><span class="s1">selenium</span><span class="s2">.</span><span class="s1">webdriver</span><span class="s2">.</span><span class="s1">common</span><span class="s2">.</span><span class="s1">by </span><span class="s0">import </span><span class="s1">By</span>
+<span class="s0">import </span><span class="s1">pytest</span>
+
+
+
+<span class="s2">@</span><span class="s1">pytest</span><span class="s2">.</span><span class="s1">fixture</span><span class="s2">()</span>
+<span class="s0">def </span><span class="s1">setup</span><span class="s2">():</span>
+    <span class="s1">driver </span><span class="s2">= </span><span class="s1">webdriver</span><span class="s2">.</span><span class="s1">Chrome</span><span class="s2">()</span>
+    <span class="s1">driver</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s3">&quot;http://localhost:8080&quot;</span><span class="s2">)</span>
+    <span class="s0">yield </span><span class="s1">driver</span>
+    <span class="s1">driver</span><span class="s2">.</span><span class="s1">quit</span><span class="s2">()</span>
+
+<span class="s0">def </span><span class="s1">test_addition</span><span class="s2">(</span><span class="s1">setup</span><span class="s2">):</span>
+    <span class="s1">driver </span><span class="s2">= </span><span class="s1">setup</span>
+    <span class="s1">rendomNUm1 </span><span class="s2">= </span><span class="s1">float</span><span class="s2">(</span><span class="s1">random</span><span class="s2">.</span><span class="s1">randint</span><span class="s2">(</span><span class="s4">0</span><span class="s2">,</span><span class="s4">100</span><span class="s2">))</span>
+    <span class="s1">rendomNUm2 </span><span class="s2">= </span><span class="s1">float</span><span class="s2">(</span><span class="s1">random</span><span class="s2">.</span><span class="s1">randint</span><span class="s2">(</span><span class="s4">0</span><span class="s2">,</span><span class="s4">100</span><span class="s2">))</span>
+    <span class="s1">sum </span><span class="s2">= </span><span class="s1">rendomNUm1 </span><span class="s2">+ </span><span class="s1">rendomNUm2</span>
+    <span class="s1">driver</span><span class="s2">.</span><span class="s1">find_element</span><span class="s2">(</span><span class="s1">By</span><span class="s2">.</span><span class="s1">ID</span><span class="s2">, </span><span class="s3">&quot;num1&quot;</span><span class="s2">).</span><span class="s1">send_keys</span><span class="s2">(</span><span class="s1">str</span><span class="s2">(</span><span class="s1">rendomNUm1</span><span class="s2">))</span>
+    <span class="s1">driver</span><span class="s2">.</span><span class="s1">find_element</span><span class="s2">(</span><span class="s1">By</span><span class="s2">.</span><span class="s1">ID</span><span class="s2">, </span><span class="s3">&quot;num2&quot;</span><span class="s2">).</span><span class="s1">send_keys</span><span class="s2">(</span><span class="s1">str</span><span class="s2">(</span><span class="s1">rendomNUm2</span><span class="s2">))</span>
+    <span class="s1">driver</span><span class="s2">.</span><span class="s1">find_element</span><span class="s2">(</span><span class="s1">By</span><span class="s2">.</span><span class="s1">XPATH</span><span class="s2">, </span><span class="s3">&quot;//button[text()='Add']&quot;</span><span class="s2">).</span><span class="s1">click</span><span class="s2">()</span>
+    <span class="s1">result </span><span class="s2">= </span><span class="s1">driver</span><span class="s2">.</span><span class="s1">find_element</span><span class="s2">(</span><span class="s1">By</span><span class="s2">.</span><span class="s1">ID</span><span class="s2">, </span><span class="s3">&quot;result&quot;</span><span class="s2">).</span><span class="s1">text</span>
+    <span class="s0">assert </span><span class="s1">result </span><span class="s2">== </span><span class="s3">f&quot;Result: </span><span class="s0">{</span><span class="s1">sum</span><span class="s0">}</span><span class="s3">&quot;</span>
+
+<span class="s0">def </span><span class="s1">test_subtraction</span><span class="s2">(</span><span class="s1">setup</span><span class="s2">):</span>
+    <span class="s1">driver </span><span class="s2">= </span><span class="s1">setup</span>
+    <span class="s1">count </span><span class="s2">= </span><span class="s4">0</span>
+    <span class="s0">for </span><span class="s1">i </span><span class="s0">in </span><span class="s1">range</span><span class="s2">(</span><span class="s4">3</span><span class="s2">):</span>
+        <span class="s1">rendomNUm1 </span><span class="s2">= </span><span class="s1">float</span><span class="s2">(</span><span class="s1">random</span><span class="s2">.</span><span class="s1">randint</span><span class="s2">(</span><span class="s4">0</span><span class="s2">, </span><span class="s4">100</span><span class="s2">))</span>
+        <span class="s1">rendomNUm2 </span><span class="s2">= </span><span class="s1">float</span><span class="s2">(</span><span class="s1">random</span><span class="s2">.</span><span class="s1">randint</span><span class="s2">(</span><span class="s4">0</span><span class="s2">, </span><span class="s4">100</span><span class="s2">))</span>
+        <span class="s1">sub </span><span class="s2">= </span><span class="s1">rendomNUm1 </span><span class="s2">- </span><span class="s1">rendomNUm2</span>
+        <span class="s1">driver</span><span class="s2">.</span><span class="s1">find_element</span><span class="s2">(</span><span class="s1">By</span><span class="s2">.</span><span class="s1">ID</span><span class="s2">, </span><span class="s3">&quot;num1&quot;</span><span class="s2">).</span><span class="s1">send_keys</span><span class="s2">(</span><span class="s1">str</span><span class="s2">(</span><span class="s1">rendomNUm1</span><span class="s2">))</span>
+        <span class="s1">driver</span><span class="s2">.</span><span class="s1">find_element</span><span class="s2">(</span><span class="s1">By</span><span class="s2">.</span><span class="s1">ID</span><span class="s2">, </span><span class="s3">&quot;num2&quot;</span><span class="s2">).</span><span class="s1">send_keys</span><span class="s2">(</span><span class="s1">str</span><span class="s2">(</span><span class="s1">rendomNUm2</span><span class="s2">))</span>
+        <span class="s1">driver</span><span class="s2">.</span><span class="s1">find_element</span><span class="s2">(</span><span class="s1">By</span><span class="s2">.</span><span class="s1">XPATH</span><span class="s2">, </span><span class="s3">&quot;//button[text()='Subtract']&quot;</span><span class="s2">).</span><span class="s1">click</span><span class="s2">()</span>
+        <span class="s1">result </span><span class="s2">= </span><span class="s1">driver</span><span class="s2">.</span><span class="s1">find_element</span><span class="s2">(</span><span class="s1">By</span><span class="s2">.</span><span class="s1">ID</span><span class="s2">, </span><span class="s3">&quot;result&quot;</span><span class="s2">).</span><span class="s1">text</span>
+        <span class="s1">driver</span><span class="s2">.</span><span class="s1">find_element</span><span class="s2">(</span><span class="s1">By</span><span class="s2">.</span><span class="s1">ID</span><span class="s2">, </span><span class="s3">&quot;num1&quot;</span><span class="s2">).</span><span class="s1">clear</span><span class="s2">()</span>
+        <span class="s1">driver</span><span class="s2">.</span><span class="s1">find_element</span><span class="s2">(</span><span class="s1">By</span><span class="s2">.</span><span class="s1">ID</span><span class="s2">, </span><span class="s3">&quot;num2&quot;</span><span class="s2">).</span><span class="s1">clear</span><span class="s2">()</span>
+        <span class="s0">if </span><span class="s1">result </span><span class="s2">== </span><span class="s3">f&quot;Result: </span><span class="s0">{</span><span class="s1">sub</span><span class="s0">}</span><span class="s3">&quot;</span><span class="s2">:</span>
+            <span class="s1">count </span><span class="s2">+= </span><span class="s4">1</span>
+    <span class="s0">assert </span><span class="s4">3 </span><span class="s2">== </span><span class="s1">count</span>
+
+
+<span class="s0">def </span><span class="s1">test_FirstFieldAisEmpty</span><span class="s2">(</span><span class="s1">setup</span><span class="s2">):</span>
+    <span class="s1">driver </span><span class="s2">= </span><span class="s1">setup</span>
+    <span class="s1">driver</span><span class="s2">.</span><span class="s1">find_element</span><span class="s2">(</span><span class="s1">By</span><span class="s2">.</span><span class="s1">ID</span><span class="s2">, </span><span class="s3">&quot;num2&quot;</span><span class="s2">).</span><span class="s1">send_keys</span><span class="s2">(</span><span class="s3">&quot;3&quot;</span><span class="s2">)</span>
+    <span class="s1">driver</span><span class="s2">.</span><span class="s1">find_element</span><span class="s2">(</span><span class="s1">By</span><span class="s2">.</span><span class="s1">XPATH</span><span class="s2">, </span><span class="s3">&quot;//button[text()='Subtract']&quot;</span><span class="s2">).</span><span class="s1">click</span><span class="s2">()</span>
+    <span class="s1">result </span><span class="s2">= </span><span class="s1">driver</span><span class="s2">.</span><span class="s1">find_element</span><span class="s2">(</span><span class="s1">By</span><span class="s2">.</span><span class="s1">ID</span><span class="s2">, </span><span class="s3">&quot;result&quot;</span><span class="s2">).</span><span class="s1">text</span>
+    <span class="s0">assert </span><span class="s1">result </span><span class="s2">== </span><span class="s3">&quot;Please enter both numbers.&quot;</span>
+
+<span class="s0">def </span><span class="s1">test_SecondFieldAisEmpty</span><span class="s2">(</span><span class="s1">setup</span><span class="s2">):</span>
+    <span class="s1">driver </span><span class="s2">= </span><span class="s1">setup</span>
+    <span class="s1">driver</span><span class="s2">.</span><span class="s1">find_element</span><span class="s2">(</span><span class="s1">By</span><span class="s2">.</span><span class="s1">ID</span><span class="s2">, </span><span class="s3">&quot;num1&quot;</span><span class="s2">).</span><span class="s1">send_keys</span><span class="s2">(</span><span class="s3">&quot;3&quot;</span><span class="s2">)</span>
+    <span class="s1">driver</span><span class="s2">.</span><span class="s1">find_element</span><span class="s2">(</span><span class="s1">By</span><span class="s2">.</span><span class="s1">XPATH</span><span class="s2">, </span><span class="s3">&quot;//button[text()='Subtract']&quot;</span><span class="s2">).</span><span class="s1">click</span><span class="s2">()</span>
+    <span class="s1">result </span><span class="s2">= </span><span class="s1">driver</span><span class="s2">.</span><span class="s1">find_element</span><span class="s2">(</span><span class="s1">By</span><span class="s2">.</span><span class="s1">ID</span><span class="s2">, </span><span class="s3">&quot;result&quot;</span><span class="s2">).</span><span class="s1">text</span>
+    <span class="s0">assert </span><span class="s1">result </span><span class="s2">== </span><span class="s3">&quot;Please enter both numbers.&quot;</span>
+
+<span class="s0">def </span><span class="s1">test_BothFieldsAreEmpty</span><span class="s2">(</span><span class="s1">setup</span><span class="s2">):</span>
+    <span class="s1">driver </span><span class="s2">= </span><span class="s1">setup</span>
+    <span class="s1">driver</span><span class="s2">.</span><span class="s1">find_element</span><span class="s2">(</span><span class="s1">By</span><span class="s2">.</span><span class="s1">XPATH</span><span class="s2">, </span><span class="s3">&quot;//button[text()='Subtract']&quot;</span><span class="s2">).</span><span class="s1">click</span><span class="s2">()</span>
+    <span class="s1">result </span><span class="s2">= </span><span class="s1">driver</span><span class="s2">.</span><span class="s1">find_element</span><span class="s2">(</span><span class="s1">By</span><span class="s2">.</span><span class="s1">ID</span><span class="s2">, </span><span class="s3">&quot;result&quot;</span><span class="s2">).</span><span class="s1">text</span>
+    <span class="s0">assert </span><span class="s1">result </span><span class="s2">== </span><span class="s3">&quot;Please enter both numbers.&quot;</span></pre>
+</body>
+</html>
